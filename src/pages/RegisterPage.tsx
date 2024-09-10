@@ -1,10 +1,9 @@
 const RegisterPage = () => {
-    return (
-      <>
-        <div>Register Page</div>
-      </>
-    );
-  };
-  
-  export default RegisterPage;
-  
+  return (
+    <>
+      <div className="min-h-[90vh] bg-neutral-50 shadow-inner">RegisterPage</div>
+    </>
+  );
+};
+
+export default RegisterPage;

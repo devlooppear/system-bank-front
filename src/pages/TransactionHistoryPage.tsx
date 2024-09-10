@@ -1,7 +1,9 @@
 const TransactionHistoryPage = () => {
   return (
     <>
-      <div>Transaction History Page</div>
+      <div className="min-h-[90vh] bg-neutral-50 shadow-inner">
+        TransactionHistoryPage
+      </div>
     </>
   );
 };

@@ -1,7 +1,7 @@
 const NoPage = () => {
-  return(
+  return (
     <>
-    <div>NoPage</div>
+      <div className="min-h-[90vh] bg-neutral-50 shadow-inner">NoPage</div>
     </>
   );
 };

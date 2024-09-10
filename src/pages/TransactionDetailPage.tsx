@@ -5,7 +5,9 @@ const TransactionDetailPage = () => {
 
   return (
     <>
-      <div>Transaction Detail Page for transaction ID: {id}</div>
+      <div className="min-h-[90vh] bg-neutral-50 shadow-inner">
+        Transaction Detail Page for transaction ID: {id}
+      </div>
     </>
   );
 };
