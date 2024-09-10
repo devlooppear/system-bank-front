@@ -14,9 +14,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<LoginPage />} />
+          <Route index element={<HomePage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="home" element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
           <Route path="transaction" element={<TransactionPage />} />
           <Route path="history" element={<TransactionHistoryPage />} />
           <Route path="transaction/:id" element={<TransactionDetailPage />} />
