@@ -8,9 +8,9 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-800 text-white py-10">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl font-semibold text-center mb-6">Metis Bank</h2>
+    <footer className="bg-neutral-100 text-neutral-700">
+      <h2 className="text-xl font-semibold text-center mb-6 bg-neutral-500 text-neutral-100 py-1">Metis Bank</h2>
+      <div className="max-w-7xl mx-auto px-4 pb-3">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <div className="flex flex-col items-center mb-4 sm:mb-0 w-full my-3">
             <h4 className="font-bold text-lg">Links Úteis</h4>
