@@ -11,7 +11,7 @@ const NavBar = () => {
       />
       <ul className="flex gap-3 mx-3 justify-center align-middle items-center">
         <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
-          <Link to="/">Acess Account</Link>
+          <Link to="/login">Acess Account</Link>
         </li>
         <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
           <Link to="/register">Open Account</Link>
