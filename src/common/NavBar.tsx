@@ -3,7 +3,7 @@ import logoMetisBank from "/logo/android-chrome-192x192.png";
 
 const NavBar = () => {
   return (
-    <nav className="flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
+    <nav className="absolute top-0 w-full flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
       <img
         src={logoMetisBank}
         className="max-w-[50px] rounded-md shadow-md mx-2"
