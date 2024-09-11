@@ -42,7 +42,7 @@ const TransactionPage = () => {
           {transactions.map((transaction) => (
             <div key={transaction.id} className="flex p-3">
               <div className="flex-1">{transaction.transaction_type}</div>
-              <div className="flex-1">{transaction.amount}</div>
+              <div className="flex-1">{transaction.amount.toFixed(2)}</div> 
               <div className="flex-1">
                 {new Date(transaction.transaction_date).toLocaleDateString()}
               </div>
