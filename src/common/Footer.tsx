@@ -1,27 +1,11 @@
-import { Link } from "react-router-dom";
-
 const Footer = () => {
-  const links = [
-    { path: "/", label: "Início" },
-    { path: "/about", label: "Sobre Nós" },
-    { path: "/services", label: "Serviços" },
-  ];
-
   return (
-    <footer className="bg-neutral-100 text-neutral-700">
-      <h2 className="text-xl font-semibold text-center mb-6 bg-neutral-500 text-neutral-100 py-1">Metis Bank</h2>
-      <div className="max-w-7xl mx-auto px-4 pb-3">
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-          <div className="flex flex-col items-center mb-4 sm:mb-0 w-full my-3">
-            <h4 className="font-bold text-lg">Links Úteis</h4>
-            <ul className="flex flex-col items-center text-sm">
-              {links.map((link, index) => (
-                <li key={index} className="mt-2 hover:underline">
-                  <Link to={link.path}>{link.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <footer className="bg-neutral-100 text-neutral-700 min-h-[28vh]">
+      <h2 className="text-xl font-semibold text-center mb-6 bg-neutral-500 text-neutral-100 py-1">
+        Metis Bank
+      </h2>
+      <div className="flex flex-col gap-6 mx-auto px-4 pb-3">
+        <div className="flex flex-col pt-5 sm:flex-row justify-between items-center mb-6">
           <div className="flex flex-col items-center mb-4 sm:mb-0 w-full my-3">
             <h4 className="font-bold text-lg">Contato</h4>
             <p className="text-sm">Email: contato@metisbank.com</p>

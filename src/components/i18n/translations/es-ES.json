@@ -1,1 +1,34 @@
-{}
+{
+  "title": "Construye Tu Futuro Hoy",
+  "welcome": "¡Bienvenido a MetisBank! Aquí, la innovación y la confianza van de la mano. Únete a miles de clientes que ya están experimentando el futuro de la banca: un futuro centrado en ti.",
+  "openAccount": "Abre Tu Cuenta Ahora",
+  "whatWeOffer": "Lo Que Ofrecemos",
+  "security": {
+    "title": "Seguridad",
+    "description": "En MetisBank, tu seguridad es nuestra prioridad. Utilizamos cifrado de última generación para proteger tus datos y transacciones."
+  },
+  "simplicity": {
+    "title": "Simplicidad",
+    "description": "Disfruta de una experiencia bancaria sin complicaciones. Nuestra interfaz intuitiva facilita la gestión de tus finanzas."
+  },
+  "accessibility": {
+    "title": "Accesibilidad",
+    "description": "Accede a nuestros servicios bancarios en cualquier momento y lugar. Estamos siempre conectados, ya sea desde el móvil o el ordenador."
+  },
+  "aboutUs": "Sobre Nosotros",
+  "aboutUsDescription": "En MetisBank, buscamos redefinir el estándar del sector bancario, ofreciendo calidad y seguridad en cada transacción. Estamos aquí para garantizar que tu experiencia financiera sea la mejor posible.",
+  "loadingTransactionsError": "Error al cargar transacciones: {{error}}",
+  "loadingUserError": "Error al cargar los detalles del usuario: {{error}}",
+  "recentTransactionsTitle": "Últimas Transacciones",
+  "transactionType": "Tipo de Transacción",
+  "transactionValue": "Valor",
+  "transactionDate": "Fecha",
+  "transactionRecipient": "Destinatario",
+  "welcomeUserProfile": "Bienvenido a su perfil",
+  "userProfileTitle": "Perfil del Usuario",
+  "userDetailsTitle": "Detalles del Usuario",
+  "userEmail": "Email: {{email}}",
+  "userName": "Nombre: {{name}}",
+  "accountBalance": "Saldo: R$ {{balance}}",
+  "accountType": "Tipo de Cuenta: {{accountType}}"
+}
