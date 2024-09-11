@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useUserTransactions } from "../api/hooks/useUser";
+import { useUserTransactions } from "../../api/hooks/useUser";
 import { toast } from "react-toastify";
-import Loader from "../common/Loader";
+import Loader from "../../common/Loader";
 import { FaSort } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const TransactionPage = () => {
   const [page, setPage] = useState(1);
@@ -53,6 +54,11 @@ const TransactionPage = () => {
     setPage(1);
   };
 
+  const navigate = useNavigate();
+  const goToTransaction = () => {
+    navigate("/transaction/create");
+  };
+
   const transactionTypes = ["TED", "PIX"];
   const periods = ["7", "15", "30", "90"];
 
@@ -61,7 +67,7 @@ const TransactionPage = () => {
       <h1 className="text-2xl font-bold mb-4">Transações</h1>
 
       <div className="flex mb-4 gap-3">
-        <div className="relative flex-1 cursor-pointer">
+        <div className="relative flex-1">
           <h5 className="text-neutral-700 pb-3">Data de Início</h5>
           <input
             type="date"
@@ -71,7 +77,7 @@ const TransactionPage = () => {
             placeholder="Data de Início"
           />
         </div>
-        <div className="relative flex-1 cursor-pointer">
+        <div className="relative flex-1">
           <h5 className="text-neutral-700 pb-3">Data de Fim</h5>
           <input
             type="date"
@@ -81,7 +87,7 @@ const TransactionPage = () => {
             placeholder="Data de Fim"
           />
         </div>
-        <div className="relative flex-1 cursor-pointer">
+        <div className="relative flex-1">
           <h5 className="text-neutral-700 pb-3">Tipo de Transação</h5>
           <div
             onClick={() =>
@@ -112,7 +118,7 @@ const TransactionPage = () => {
             </div>
           )}
         </div>
-        <div className="relative flex-1 cursor-pointer">
+        <div className="relative flex-1">
           <h5 className="text-neutral-700 pb-3">Ordenar por Data</h5>
           <div className="flex gap-2">
             <button
@@ -133,7 +139,7 @@ const TransactionPage = () => {
             </button>
           </div>
         </div>
-        <div className="relative flex-1 cursor-pointer">
+        <div className="relative flex-1">
           <h5 className="text-neutral-700 pb-3">Período</h5>
           <div
             onClick={() => setIsPeriodOpen((prev) => !prev)}
@@ -170,12 +176,20 @@ const TransactionPage = () => {
         </div>
       </div>
 
-      <button
-        onClick={clearFilters}
-        className="max-w-[180px] bg-neutral-400 text-white px-4 py-2 rounded"
-      >
-        Limpar Filtros
-      </button>
+      <div className="flex gap-2">
+        <button
+          onClick={clearFilters}
+          className="max-w-[180px] bg-neutral-400 text-white px-4 py-2 rounded"
+        >
+          Limpar Filtros
+        </button>
+        <button
+          onClick={goToTransaction} // Corrected here
+          className="max-w-[180px] bg-blue-800 text-white px-4 py-2 rounded"
+        >
+          Nova Transação
+        </button>
+      </div>
 
       <div className="flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
         {loading ? (
@@ -194,9 +208,7 @@ const TransactionPage = () => {
                   <div className="flex-1">{transaction.transaction_type}</div>
                   <div className="flex-1">{transaction.amount.toFixed(2)}</div>
                   <div className="flex-1">
-                    {new Date(
-                      transaction.transaction_date
-                    ).toLocaleDateString()}
+                    {new Date(transaction.transaction_date).toLocaleDateString()}
                   </div>
                   <div className="flex-1">{transaction.recipient_name}</div>
                 </div>
@@ -218,10 +230,8 @@ const TransactionPage = () => {
           Página {page} de {meta?.totalPages || 0}
         </span>
         <button
-          onClick={() =>
-            setPage((prev) => Math.min(prev + 1, meta?.totalPages || prev))
-          }
-          disabled={meta ? page >= meta.totalPages : true}
+          onClick={() => setPage((prev) => Math.min(prev + 1, meta?.totalPages || page))}
+          disabled={page === meta?.totalPages}
           className="bg-blue-800 text-white px-4 py-2 rounded disabled:opacity-50"
         >
           Próxima

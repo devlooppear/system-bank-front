@@ -34,7 +34,10 @@ export interface TransactionResponse {
 }
 
 interface CreateTransactionParams {
-  transaction: Omit<Transaction, "id" | "created_at" | "updated_at">;
+  transaction: Omit<
+    Transaction,
+    "id" | "created_at" | "updated_at" | "account_id"
+  >;
 }
 
 const useTransaction = () => {
@@ -49,18 +52,20 @@ const useTransaction = () => {
   } | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const fetchTransactions = async (queryParams: {
-    page?: number;
-    limit?: number;
-    transaction_type?: TransactionType;
-    startDate?: string;
-    endDate?: string;
-    minAmount?: number;
-    maxAmount?: number;
-    sortBy?: string;
-    sortOrder?: "asc" | "desc";
-    user_id?: number;
-  } = {}) => {
+  const fetchTransactions = async (
+    queryParams: {
+      page?: number;
+      limit?: number;
+      transaction_type?: TransactionType;
+      startDate?: string;
+      endDate?: string;
+      minAmount?: number;
+      maxAmount?: number;
+      sortBy?: string;
+      sortOrder?: "asc" | "desc";
+      user_id?: number;
+    } = {}
+  ) => {
     setLoading(true);
     setError(null);
     try {
@@ -90,9 +95,13 @@ const useTransaction = () => {
     try {
       await apiService.post("/transactions", transaction);
       setSuccess(true);
-      fetchTransactions();
+
+      await fetchTransactions();
+
+      return true;
     } catch (err: any) {
       setError(err.message);
+      return false;
     } finally {
       setLoading(false);
     }
