@@ -27,7 +27,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
   }
 
   return (
-    <div className="w-full mt-6 bg-white shadow-lg rounded-lg p-4 text-neutral-800 overflow-auto">
+    <div className="w-full mt-6 bg-white shadow-lg rounded-lg p-4 text-neutral-800 overflow-auto max-[738px]:max-h-[38vh]">
       <h2 className="text-xl font-semibold mb-4 text-blue-950">
         {t("recentTransactionsTitle")}
       </h2>
