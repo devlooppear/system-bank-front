@@ -23,7 +23,7 @@ const useAuth = () => {
       const { token, user_id } = response.data;
 
       localStorage.setItem("authToken", token);
-      sessionStorage.setItem("user_id", user_id);
+      localStorage.setItem("user_id", user_id);
 
       dispatch(loginSuccess({ token, user_id }));
 
@@ -44,7 +44,7 @@ const useAuth = () => {
 
         if (response.data.message === "User logged out") {
           localStorage.removeItem("authToken");
-          sessionStorage.removeItem("user_id");
+          localStorage.removeItem("user_id");
 
           dispatch(logout());
         }

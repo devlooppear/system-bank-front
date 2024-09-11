@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UserProfilePage = () => {
-  const user_id = sessionStorage.getItem("user_id");
+  const user_id = localStorage.getItem("user_id");
 
   const {
     user,

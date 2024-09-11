@@ -9,6 +9,23 @@ export interface User {
   updated_at: string;
 }
 
+export interface Transaction {
+  id: number;
+  account_id: number;
+  transaction_type: string;
+  amount: number;
+  transaction_date: string;
+  cpf_recipient: string | null;
+  cnpj_recipient: string;
+  recipient_name: string;
+  bank: string;
+  branch: string;
+  account_recipient: string;
+  pix_key: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Meta {
   total: number;
   page: number;
@@ -37,6 +54,11 @@ export interface DeleteUserResponse {
   data: {
     message: string;
   };
+}
+
+export interface TransactionsResponse {
+  data: Transaction[];
+  meta: Meta;
 }
 
 const useUser = (page: number = 1, limit: number = 10) => {
@@ -89,6 +111,40 @@ const useUserById = (userId: number) => {
   }, [userId]);
 
   return { user, loading, error };
+};
+
+const useUserTransactions = (
+  userId: number,
+  page: number = 1,
+  limit: number = 10
+) => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [meta, setMeta] = useState<Meta | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (!userId) return;
+
+      setLoading(true);
+      try {
+        const response = await apiService.get<TransactionsResponse>(
+          `users/${userId}/transactions?page=${page}&limit=${limit}`
+        );
+        setTransactions(response.data.data);
+        setMeta(response.data.meta);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
+  }, [userId, page, limit]);
+
+  return { transactions, meta, loading, error };
 };
 
 const useCreateUser = () => {
@@ -162,4 +218,11 @@ const useDeleteUser = () => {
   return { deleteUser, loading, error };
 };
 
-export { useUser, useUserById, useCreateUser, useUpdateUser, useDeleteUser };
+export {
+  useUser,
+  useUserById,
+  useCreateUser,
+  useUpdateUser,
+  useDeleteUser,
+  useUserTransactions,
+};
