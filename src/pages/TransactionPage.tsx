@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserTransactions } from "../api/hooks/useUser";
+import { toast } from "react-toastify";
+
 const TransactionPage = () => {
   const [page, setPage] = useState(1);
   const [userId, setUserId] = useState<number | null>(null);
@@ -17,14 +19,14 @@ const TransactionPage = () => {
     10
   );
 
+  useEffect(() => {
+    if (error) {
+      toast.error(`Erro ao carregar transações: ${error}`);
+    }
+  }, [error]);
+
   if (loading)
     return <div className="text-center mt-5">Carregando transações...</div>;
-  if (error)
-    return (
-      <div className="text-red-500 text-center mt-5">
-        Erro ao carregar transações: {error}
-      </div>
-    );
 
   return (
     <div className="min-h-[90vh] bg-neutral-50 shadow-inner p-4">
@@ -53,7 +55,7 @@ const TransactionPage = () => {
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+          className="bg-blue-800 text-white px-4 py-2 rounded disabled:opacity-50"
         >
           Anterior
         </button>
@@ -65,7 +67,7 @@ const TransactionPage = () => {
             setPage((prev) => Math.min(prev + 1, meta?.totalPages || prev))
           }
           disabled={meta ? page >= meta.totalPages : true}
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+          className="bg-blue-800 text-white px-4 py-2 rounded disabled:opacity-50"
         >
           Próxima
         </button>
