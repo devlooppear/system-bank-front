@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../api/hooks/useAuth";
 import logoMetisBank from "/logo/android-chrome-512x512.png";
 
@@ -6,11 +7,15 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, loading, error } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await login(email, password);
+    const response = await login(email, password);
+    if (response) {
+      navigate("/main-page");
+    }
   };
 
   return (
