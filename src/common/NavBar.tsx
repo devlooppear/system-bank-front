@@ -37,7 +37,7 @@ const NavBar = () => {
 
   return (
     <nav className="w-full flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
-      <Link to="/">
+      <Link to={token ? "/dashboard" : "/"}>
         <img
           src={logoMetisBank}
           className="max-w-[50px] rounded-md shadow-md mx-2"
