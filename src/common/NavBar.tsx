@@ -1,11 +1,17 @@
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logoMetisBank from "/logo/android-chrome-192x192.png";
 import useAuth from "../api/hooks/useAuth";
+import { useEffect, useState } from "react";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const NavBar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isWideScreen, setIsWideScreen] = useState(
+    window.innerWidth > window.innerHeight
+  );
 
   const token = localStorage.getItem("authToken");
 
@@ -15,6 +21,18 @@ const NavBar = () => {
     await logout();
     navigate("/");
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWideScreen(window.innerWidth > window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <nav className="w-full flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
@@ -37,10 +55,12 @@ const NavBar = () => {
           </>
         ) : (
           <li
-            className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer"
+            className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer flex items-center text-center h-[80%]"
+            title="logout"
             onClick={handleLogout}
           >
-            Logout
+            {isWideScreen ? "Logout" : <FaSignOutAlt size={18} className="text-neutral-700"/>}
+            {isWideScreen ? null : ""}
           </li>
         )}
       </ul>
