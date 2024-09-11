@@ -1,12 +1,15 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logoMetisBank from "/logo/android-chrome-192x192.png";
 import useAuth from "../api/hooks/useAuth";
 
 const NavBar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const token = localStorage.getItem("authToken");
+
+  const routesWithoutLogout = ["/login", "/register", "/"];
 
   const handleLogout = async () => {
     await logout();
@@ -23,7 +26,7 @@ const NavBar = () => {
         />
       </Link>
       <ul className="flex gap-3 mx-3 justify-center align-middle items-center">
-        {!token ? (
+        {!token || routesWithoutLogout.includes(location.pathname) ? (
           <>
             <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
               <NavLink to="/login">Acess Account</NavLink>
