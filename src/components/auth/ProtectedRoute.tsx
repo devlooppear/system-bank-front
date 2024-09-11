@@ -1,21 +1,29 @@
 import { Navigate, Outlet } from "react-router-dom";
-import jwt from "jsonwebtoken";
+
+const isValidJWT = (token: any) => {
+  const parts = token.split(".");
+  if (parts.length !== 3) {
+    return false;
+  }
+
+  try {
+    const payload = JSON.parse(atob(parts[1]));
+    const now = Math.floor(Date.now() / 1000);
+
+    if (payload.exp && payload.exp < now) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 const ProtectedRoute = () => {
   const authToken = localStorage.getItem("authToken");
 
-  if (!authToken) {
-    return <Navigate to="/login" />;
-  }
-
-  if (authToken.length < 80) {
-    return <Navigate to="/login" />;
-  }
-
-  try {
-    const secretKey = import.meta.env.VITE_JWT_SECRET;
-    jwt.verify(authToken, secretKey);
-  } catch (error) {
+  if (!authToken || !isValidJWT(authToken)) {
     return <Navigate to="/login" />;
   }
 

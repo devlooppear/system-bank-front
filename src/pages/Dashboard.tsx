@@ -27,7 +27,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
   }
 
   return (
-    <div className="w-full mt-6 bg-white shadow-lg rounded-lg p-4 text-neutral-800">
+    <div className="w-full mt-6 bg-white shadow-lg rounded-lg p-4 text-neutral-800 overflow-auto">
       <h2 className="text-xl font-semibold mb-4 text-blue-950">
         {t("recentTransactionsTitle")}
       </h2>
@@ -81,12 +81,12 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-blue-100 to-white flex flex-col items-center gap-3 relative">
-      <div className="bg-blue-background min-h-[38vh] bg-cover w-full pt-16 flex justify-center items-center">
+      <div className="absolute z-[0] bg-blue-background min-h-[38vh] bg-cover w-full pt-16 flex justify-center items-center">
         <h1 className="text-white text-4xl font-bold">
           {t("welcomeUserProfile")}
         </h1>
       </div>
-      <div className="absolute top-[8rem] bg-white shadow-lg rounded-lg p-6 w-full max-w-[90%] mx-4">
+      <div className="max-h-[100vh] z-[3] mt-8 bg-white shadow-lg rounded-lg p-6 w-[98%] max-w-[980px] mx-4">
         <div className="flex">
           {user && (
             <>
@@ -125,10 +125,10 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <RecentTransactions userId={user_id} />
             </>
           )}
         </div>
+        <RecentTransactions userId={user_id} />
       </div>
       <ToastContainer />
     </div>
