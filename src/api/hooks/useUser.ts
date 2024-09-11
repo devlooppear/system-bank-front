@@ -7,6 +7,13 @@ export interface User {
   email: string;
   created_at: string;
   updated_at: string;
+  accounts?: Account[];
+}
+
+export interface Account {
+  id: number;
+  balance: number;
+  account_type: string;
 }
 
 export interface Transaction {
@@ -39,7 +46,7 @@ export interface UserResponse {
 }
 
 export interface UserByIdResponse {
-  data: User;
+  data: User; // A estrutura permanece igual
 }
 
 export interface CreateUserResponse {
