@@ -32,18 +32,6 @@ const Sidebar = () => {
               Transactions
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                `block px-4 py-2 rounded-lg ${
-                  isActive ? "bg-gray-700" : "hover:bg-gray-600"
-                }`
-              }
-            >
-              Profile
-            </NavLink>
-          </li>
         </ul>
       </nav>
     </div>

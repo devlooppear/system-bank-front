@@ -5,7 +5,6 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import TransactionPage from "./pages/TransactionPage";
 import TransactionDetailPage from "./pages/TransactionDetailPage";
-import UserProfilePage from "./pages/UserProfilePage";
 import NoPage from "./pages/NoPage";
 import Dashboard from "./pages/Dashboard";
 
@@ -20,7 +19,6 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="transaction" element={<TransactionPage />} />
           <Route path="transaction/:id" element={<TransactionDetailPage />} />
-          <Route path="profile" element={<UserProfilePage />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

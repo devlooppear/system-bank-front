@@ -46,7 +46,7 @@ export interface UserResponse {
 }
 
 export interface UserByIdResponse {
-  data: User; // A estrutura permanece igual
+  data: User;
 }
 
 export interface CreateUserResponse {
