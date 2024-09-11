@@ -116,7 +116,14 @@ const useUserById = (userId: number) => {
 const useUserTransactions = (
   userId: number,
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
+  transactionType?: string,
+  startDate?: string,
+  endDate?: string,
+  minAmount?: number,
+  maxAmount?: number,
+  period?: number,
+  sortByDate?: "asc" | "desc"
 ) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [meta, setMeta] = useState<Meta | null>(null);
@@ -130,7 +137,20 @@ const useUserTransactions = (
       setLoading(true);
       try {
         const response = await apiService.get<TransactionsResponse>(
-          `users/${userId}/transactions?page=${page}&limit=${limit}`
+          `users/${userId}/transactions`,
+          {
+            params: {
+              page,
+              limit,
+              transactionType,
+              startDate,
+              endDate,
+              minAmount,
+              maxAmount,
+              period,
+              sortByDate,
+            },
+          }
         );
         setTransactions(response.data.data);
         setMeta(response.data.meta);
@@ -142,7 +162,18 @@ const useUserTransactions = (
     };
 
     fetchTransactions();
-  }, [userId, page, limit]);
+  }, [
+    userId,
+    page,
+    limit,
+    transactionType,
+    startDate,
+    endDate,
+    minAmount,
+    maxAmount,
+    period,
+    sortByDate,
+  ]);
 
   return { transactions, meta, loading, error };
 };

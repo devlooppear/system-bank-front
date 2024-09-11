@@ -34,18 +34,6 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
-              to="/history"
-              className={({ isActive }) =>
-                `block px-4 py-2 rounded-lg ${
-                  isActive ? "bg-gray-700" : "hover:bg-gray-600"
-                }`
-              }
-            >
-              Transaction History
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
               to="/profile"
               className={({ isActive }) =>
                 `block px-4 py-2 rounded-lg ${

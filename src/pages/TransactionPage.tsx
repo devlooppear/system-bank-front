@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 import { useUserTransactions } from "../api/hooks/useUser";
 import { toast } from "react-toastify";
 import Loader from "../common/Loader";
+import { FaSort } from "react-icons/fa";
 
 const TransactionPage = () => {
   const [page, setPage] = useState(1);
   const [userId, setUserId] = useState<number | null>(null);
+  const [transactionType, setTransactionType] = useState<string | undefined>(undefined);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("user_id");
@@ -17,7 +21,10 @@ const TransactionPage = () => {
   const { transactions, loading, error, meta } = useUserTransactions(
     userId as number,
     page,
-    10
+    10,
+    transactionType,
+    startDate,
+    endDate
   );
 
   useEffect(() => {
@@ -26,9 +33,79 @@ const TransactionPage = () => {
     }
   }, [error]);
 
+  const clearFilters = () => {
+    setTransactionType(undefined);
+    setStartDate("");
+    setEndDate("");
+    setPage(1);
+  };
+
+  const transactionTypes = ["TED", "PIX"];
+
   return (
-    <div className="min-h-[90vh] bg-neutral-50 shadow-inner p-4">
+    <div className="min-h-screen bg-neutral-50 shadow-inner p-4 flex flex-col gap-5">
       <h1 className="text-2xl font-bold mb-4">Transações</h1>
+
+      <div className="flex mb-4 gap-3">
+        <div className="relative flex-1 cursor-pointer">
+          <h5 className="text-neutral-700 pb-3">Data de Início</h5>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border rounded-lg p-2 w-full"
+            placeholder="Data de Início"
+          />
+        </div>
+        <div className="relative flex-1 cursor-pointer">
+          <h5 className="text-neutral-700 pb-3">Data de Fim</h5>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="border rounded-lg p-2 w-full"
+            placeholder="Data de Fim"
+          />
+        </div>
+        <div className="relative flex-1 cursor-pointer">
+          <h5 className="text-neutral-700 pb-3">Tipo de Transação</h5>
+          <div
+            onClick={() =>
+              setTransactionType(transactionType === "TED" ? undefined : "TED")
+            }
+            className="cursor-pointer border rounded-lg p-2 flex justify-between items-center bg-white"
+          >
+            <span>{transactionType ? transactionType : "Selecionar"}</span>
+            <FaSort />
+          </div>
+          {transactionType && (
+            <div className="absolute mt-1 bg-white border rounded-lg shadow-lg z-10">
+              {transactionTypes.map((type) => (
+                <div
+                  key={type}
+                  onClick={() => setTransactionType(type)}
+                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                >
+                  {type}
+                </div>
+              ))}
+              <div
+                onClick={() => setTransactionType(undefined)}
+                className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              >
+                Todos
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <button
+        onClick={clearFilters}
+        className="max-w-[180px] bg-neutral-400 text-white px-4 py-2 rounded"
+      >
+        Limpar Filtros
+      </button>
+
       <div className="flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
         {loading ? (
           <Loader />
@@ -46,9 +123,7 @@ const TransactionPage = () => {
                   <div className="flex-1">{transaction.transaction_type}</div>
                   <div className="flex-1">{transaction.amount.toFixed(2)}</div>
                   <div className="flex-1">
-                    {new Date(
-                      transaction.transaction_date
-                    ).toLocaleDateString()}
+                    {new Date(transaction.transaction_date).toLocaleDateString()}
                   </div>
                   <div className="flex-1">{transaction.recipient_name}</div>
                 </div>
@@ -57,6 +132,7 @@ const TransactionPage = () => {
           </>
         )}
       </div>
+
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
