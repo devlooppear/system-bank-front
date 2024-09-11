@@ -1,13 +1,12 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import logoMetisBank from "/logo/android-chrome-192x192.png";
 import useAuth from "../api/hooks/useAuth";
-import { RootState } from "../store/store";
 
 const NavBar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
-  const { token } = useSelector((state: RootState) => state.auth);
+
+  const token = localStorage.getItem("authToken");
 
   const handleLogout = async () => {
     await logout();
@@ -15,7 +14,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="absolute top-0 w-full flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
+    <nav className="w-full flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
       <Link to="/">
         <img
           src={logoMetisBank}

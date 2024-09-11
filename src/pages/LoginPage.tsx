@@ -17,7 +17,7 @@ const LoginPage = () => {
     const response = await login(email, password);
     if (response) {
       toast.success("Login realizado com sucesso!");
-      navigate("/main-page");
+      navigate("/dashboard");
     } else {
       toast.error(
         "Desculpe, ocorreu um erro. Verifique os dados e tente novamente."

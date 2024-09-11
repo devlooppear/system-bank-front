@@ -21,6 +21,9 @@ const useAuth = () => {
       const response = await apiService.post("auth/login", { email, password });
 
       const { token, user_id } = response.data;
+
+      localStorage.setItem("authToken", token);
+
       dispatch(loginSuccess({ token, user_id }));
 
       return response.data;
@@ -39,6 +42,8 @@ const useAuth = () => {
         });
 
         if (response.data.message === "User logged out") {
+          localStorage.removeItem("authToken");
+
           dispatch(logout());
         }
       } else {
