@@ -1,26 +1,30 @@
 import { FaCheck, FaMobileAlt, FaShieldAlt } from "react-icons/fa";
 import logoMetisBank from "/logo/android-chrome-512x512.png";
 import aboutUSMetis from "/imgs/21c04bda-8310-49bb-8a47-7e01adf192bc.jpeg";
+import { NavLink } from "react-router-dom";
 
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-
       <header className="flex flex-col items-center justify-center min-h-[60vh] bg-gradient-to-b from-blue-600 to-blue-800 text-white text-center p-6">
         <img
           src={logoMetisBank}
           alt="logo-metis-bank"
           className="rounded-full shadow-lg my-4 w-32 sm:w-40 lg:w-48"
         />
-        <h1 className="text-5xl font-extrabold mb-4">Construa Seu Futuro Hoje</h1>
+        <h1 className="text-5xl font-extrabold mb-4">
+          Construa Seu Futuro Hoje
+        </h1>
         <p className="text-lg mb-4 max-w-2xl">
-          Bem-vindo ao MetisBank! Aqui, inovação e confiança andam de mãos dadas.
-          Junte-se a milhares de clientes que já estão vivenciando o futuro da
-          banca — um futuro centrado em você.
+          Bem-vindo ao MetisBank! Aqui, inovação e confiança andam de mãos
+          dadas. Junte-se a milhares de clientes que já estão vivenciando o
+          futuro da banca — um futuro centrado em você.
         </p>
-        <button className="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
-          Abra Sua Conta Agora
-        </button>
+        <NavLink to="register">
+          <button className="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+            Abra Sua Conta Agora
+          </button>
+        </NavLink>
       </header>
 
       <section className="py-12 bg-gray-100 min-h-[55vh]">
@@ -33,21 +37,25 @@ const HomePage = () => {
               <FaShieldAlt className="w-12 h-12 text-blue-600 mb-4" />
               <h4 className="text-xl font-bold">Segurança</h4>
               <p className="text-gray-600 text-center">
-                Na MetisBank, a sua segurança é a nossa prioridade. Utilizamos criptografia de ponta para proteger seus dados e transações.
+                Na MetisBank, a sua segurança é a nossa prioridade. Utilizamos
+                criptografia de ponta para proteger seus dados e transações.
               </p>
             </div>
             <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
               <FaCheck className="w-12 h-12 text-blue-600 mb-4" />
               <h4 className="text-xl font-bold">Simplicidade</h4>
               <p className="text-gray-600 text-center">
-                Desfrute de uma experiência bancária sem complicações. Nossa interface intuitiva torna fácil o gerenciamento das suas finanças.
+                Desfrute de uma experiência bancária sem complicações. Nossa
+                interface intuitiva torna fácil o gerenciamento das suas
+                finanças.
               </p>
             </div>
             <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
               <FaMobileAlt className="w-12 h-12 text-blue-600 mb-4" />
               <h4 className="text-xl font-bold">Acessibilidade</h4>
               <p className="text-gray-600 text-center">
-                Acesse nossos serviços bancários a qualquer hora, em qualquer lugar. Estamos sempre conectados, seja pelo celular ou desktop.
+                Acesse nossos serviços bancários a qualquer hora, em qualquer
+                lugar. Estamos sempre conectados, seja pelo celular ou desktop.
               </p>
             </div>
           </div>
@@ -67,8 +75,9 @@ const HomePage = () => {
             Sobre Nós
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            Na MetisBank, buscamos redefinir o padrão do setor bancário, oferecendo qualidade e segurança em cada transação.
-            Estamos aqui para garantir que sua experiência financeira seja a melhor possível.
+            Na MetisBank, buscamos redefinir o padrão do setor bancário,
+            oferecendo qualidade e segurança em cada transação. Estamos aqui
+            para garantir que sua experiência financeira seja a melhor possível.
           </p>
         </div>
       </section>
