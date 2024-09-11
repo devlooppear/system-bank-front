@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserTransactions } from "../api/hooks/useUser";
 import { toast } from "react-toastify";
+import Loader from "../common/Loader";
 
 const TransactionPage = () => {
   const [page, setPage] = useState(1);
@@ -25,31 +26,36 @@ const TransactionPage = () => {
     }
   }, [error]);
 
-  if (loading)
-    return <div className="text-center mt-5">Carregando transações...</div>;
-
   return (
     <div className="min-h-[90vh] bg-neutral-50 shadow-inner p-4">
       <h1 className="text-2xl font-bold mb-4">Transações</h1>
       <div className="flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="flex bg-gray-200 p-3">
-          <div className="flex-1 font-semibold">Tipo de Transação</div>
-          <div className="flex-1 font-semibold">Valor</div>
-          <div className="flex-1 font-semibold">Data da Transação</div>
-          <div className="flex-1 font-semibold">Nome do Recipiente</div>
-        </div>
-        <div className="flex flex-col divide-y">
-          {transactions.map((transaction) => (
-            <div key={transaction.id} className="flex p-3">
-              <div className="flex-1">{transaction.transaction_type}</div>
-              <div className="flex-1">{transaction.amount.toFixed(2)}</div> 
-              <div className="flex-1">
-                {new Date(transaction.transaction_date).toLocaleDateString()}
-              </div>
-              <div className="flex-1">{transaction.recipient_name}</div>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <div className="flex bg-gray-200 p-3">
+              <div className="flex-1 font-semibold">Tipo de Transação</div>
+              <div className="flex-1 font-semibold">Valor</div>
+              <div className="flex-1 font-semibold">Data da Transação</div>
+              <div className="flex-1 font-semibold">Nome do Recipiente</div>
             </div>
-          ))}
-        </div>
+            <div className="flex flex-col divide-y">
+              {transactions.map((transaction) => (
+                <div key={transaction.id} className="flex p-3">
+                  <div className="flex-1">{transaction.transaction_type}</div>
+                  <div className="flex-1">{transaction.amount.toFixed(2)}</div>
+                  <div className="flex-1">
+                    {new Date(
+                      transaction.transaction_date
+                    ).toLocaleDateString()}
+                  </div>
+                  <div className="flex-1">{transaction.recipient_name}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="flex justify-between items-center mt-4">
         <button

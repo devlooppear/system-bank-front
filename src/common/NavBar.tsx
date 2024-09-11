@@ -3,6 +3,7 @@ import logoMetisBank from "/logo/android-chrome-192x192.png";
 import useAuth from "../api/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
+import LanguageSwitcher from "../components/i18n/LanguageSwitcher";
 
 const NavBar = () => {
   const { logout } = useAuth();
@@ -55,14 +56,19 @@ const NavBar = () => {
           </>
         ) : (
           <li
-            className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer flex items-center text-center h-[80%]"
+            className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer flex items-center text-center h-[71%]"
             title="logout"
             onClick={handleLogout}
           >
-            {isWideScreen ? "Logout" : <FaSignOutAlt size={18} className="text-neutral-700"/>}
+            {isWideScreen ? (
+              "Logout"
+            ) : (
+              <FaSignOutAlt size={18} className="text-neutral-700" />
+            )}
             {isWideScreen ? null : ""}
           </li>
         )}
+        <LanguageSwitcher />
       </ul>
     </nav>
   );

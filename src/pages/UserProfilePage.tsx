@@ -3,6 +3,7 @@ import { useUserById, useUpdateUser } from "../api/hooks/useUser";
 import defaultUserImg from "/imgs/27059cae-6647-4966-b6c6-e80475d08712.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../common/Loader";
 
 const UserProfilePage = () => {
   const user_id = localStorage.getItem("user_id");
@@ -49,8 +50,11 @@ const UserProfilePage = () => {
 
   if (userLoading)
     return (
-      <div className="text-center mt-5">Carregando detalhes do usuário...</div>
+      <div className="flex justify-center items-center h-screen">
+        <Loader />
+      </div>
     );
+
   if (userError)
     return (
       <div className="text-red-500 text-center mt-5">
@@ -122,7 +126,7 @@ const UserProfilePage = () => {
                 disabled={updateLoading}
                 className="bg-blue-800 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 hover:bg-blue-700"
               >
-                {updateLoading ? "Atualizando..." : "Salvar"}
+                {updateLoading ? <Loader /> : "Salvar"}
               </button>
               <button
                 onClick={() => setIsModalOpen(false)}
