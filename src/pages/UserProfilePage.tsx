@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useUserById, useUpdateUser } from "../api/hooks/useUser";
-import { RootState } from "../store/store";
 import defaultUserImg from "/imgs/27059cae-6647-4966-b6c6-e80475d08712.jpg";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserProfilePage = () => {
-  const { user_id } = useSelector((state: RootState) => state.auth);
+  const user_id = sessionStorage.getItem("user_id");
 
   const {
     user,
     loading: userLoading,
     error: userError,
-  } = useUserById(user_id || 0);
+  } = useUserById(user_id ? parseInt(user_id) : 0);
+
   const {
     updateUser,
     loading: updateLoading,
@@ -22,6 +21,8 @@ const UserProfilePage = () => {
 
   const [name, setName] = useState<string>(user?.name || "");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const MIN_NAME_LENGTH = 3;
 
   useEffect(() => {
     if (user) {
@@ -32,22 +33,37 @@ const UserProfilePage = () => {
   const handleUpdateName = async () => {
     if (!user_id) return;
 
+    if (name.length < MIN_NAME_LENGTH) {
+      toast.error(`O nome deve ter pelo menos ${MIN_NAME_LENGTH} caracteres.`);
+      return;
+    }
+
     try {
-      await updateUser(user_id, { name });
+      await updateUser(parseInt(user_id), { name });
       toast.success("Nome atualizado com sucesso!");
-      setIsModalOpen(false); // Fechar o modal após a atualização
+      setIsModalOpen(false);
     } catch (err) {
       toast.error("Falha ao atualizar o nome.");
     }
   };
 
-  if (userLoading) return <div className="text-center mt-5">Carregando detalhes do usuário...</div>;
-  if (userError) return <div className="text-red-500 text-center mt-5">Erro ao carregar detalhes do usuário: {userError}</div>;
+  if (userLoading)
+    return (
+      <div className="text-center mt-5">Carregando detalhes do usuário...</div>
+    );
+  if (userError)
+    return (
+      <div className="text-red-500 text-center mt-5">
+        Erro ao carregar detalhes do usuário: {userError}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-blue-100 to-white flex flex-col items-center gap-3 relative">
       <div className="bg-blue-background min-h-[38vh] bg-cover w-full pt-16 flex justify-center items-center">
-        <h1 className="text-white text-4xl font-bold">Bem-vindo ao seu perfil</h1>
+        <h1 className="text-white text-4xl font-bold">
+          Bem-vindo ao seu perfil
+        </h1>
       </div>
       <div className="absolute top-[8rem] bg-white shadow-lg rounded-lg p-6 w-full max-w-md mx-4">
         <h1 className="text-3xl font-bold mb-6 text-center text-blue-950">
@@ -67,8 +83,12 @@ const UserProfilePage = () => {
               <strong>Email:</strong> {user.email}
             </p>
             <div className="flex flex-col gap-1 mt-2 min-w-[90%] max-w-[300px]">
-              <label className="block text-lg mb-2 font-semibold text-neutral-700">Nome:</label>
-              <p className="border bg-neutral-200 border-gray-300 p-3 rounded-md mb-4 w-full text-gray-800 opacity-90">{name}</p>
+              <label className="block text-lg mb-2 font-semibold text-neutral-700">
+                Nome:
+              </label>
+              <p className="border bg-neutral-200 border-gray-300 p-3 rounded-md mb-4 w-full text-gray-800 opacity-90">
+                {name}
+              </p>
               <button
                 onClick={() => setIsModalOpen(true)}
                 className="bg-gradient-to-r from-blue-800 to-blue-900 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-800 w-full"
@@ -85,7 +105,6 @@ const UserProfilePage = () => {
         )}
       </div>
 
-      {/* Modal para edição de nome */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
