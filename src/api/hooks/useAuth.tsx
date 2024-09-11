@@ -10,7 +10,9 @@ import {
 
 const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { loading, error, user_id } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const login = async (email: string, password: string) => {
     dispatch(loginStart());
@@ -30,12 +32,15 @@ const useAuth = () => {
   };
 
   const logoutUser = async () => {
-    const userId = useSelector((state: RootState) => state.auth.user_id);
-
     try {
-      if (userId) {
-        await apiService.post("auth/logout", { user_id: userId });
-        dispatch(logout());
+      if (user_id) {
+        const response = await apiService.delete("auth/logout", {
+          data: { user_id },
+        });
+
+        if (response.data.message === "User logged out") {
+          dispatch(logout());
+        }
       } else {
         throw new Error("User ID not found");
       }

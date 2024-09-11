@@ -1,7 +1,19 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import logoMetisBank from "/logo/android-chrome-192x192.png";
+import useAuth from "../api/hooks/useAuth";
+import { RootState } from "../store/store";
 
 const NavBar = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { token } = useSelector((state: RootState) => state.auth);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
   return (
     <nav className="absolute top-0 w-full flex justify-between bg-neutral-100 border-b-2 border-neutral-300 py-1">
       <Link to="/">
@@ -12,12 +24,23 @@ const NavBar = () => {
         />
       </Link>
       <ul className="flex gap-3 mx-3 justify-center align-middle items-center">
-        <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
-          <NavLink to="/login">Acess Account</NavLink>
-        </li>
-        <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
-          <NavLink to="/register">Open Account</NavLink>
-        </li>
+        {!token ? (
+          <>
+            <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
+              <NavLink to="/login">Acess Account</NavLink>
+            </li>
+            <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
+              <NavLink to="/register">Open Account</NavLink>
+            </li>
+          </>
+        ) : (
+          <li
+            className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer"
+            onClick={handleLogout}
+          >
+            Logout
+          </li>
+        )}
       </ul>
     </nav>
   );
