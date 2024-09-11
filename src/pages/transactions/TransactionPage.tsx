@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Loader from "../../common/Loader";
 import { FaSort } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const TransactionPage = () => {
   const [page, setPage] = useState(1);
@@ -26,6 +27,8 @@ const TransactionPage = () => {
     }
   }, []);
 
+  const { t } = useTranslation();
+
   const { transactions, loading, error, meta } = useUserTransactions(
     userId as number,
     page,
@@ -41,7 +44,7 @@ const TransactionPage = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(`Erro ao carregar transações: ${error}`);
+      toast.error(t("errorLoadingTransactions", { error }));
     }
   }, [error]);
 
@@ -64,38 +67,38 @@ const TransactionPage = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50 shadow-inner p-4 flex flex-col gap-5">
-      <h1 className="text-2xl font-bold mb-4">Transações</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("transactions")}</h1>
 
       <div className="flex mb-4 gap-3">
         <div className="relative flex-1">
-          <h5 className="text-neutral-700 pb-3">Data de Início</h5>
+          <h5 className="text-neutral-700 pb-3">{t("startDate")}</h5>
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             className="border rounded-lg p-2 w-full"
-            placeholder="Data de Início"
+            placeholder={t("startDate")}
           />
         </div>
         <div className="relative flex-1">
-          <h5 className="text-neutral-700 pb-3">Data de Fim</h5>
+          <h5 className="text-neutral-700 pb-3">{t("endDate")}</h5>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
             className="border rounded-lg p-2 w-full"
-            placeholder="Data de Fim"
+            placeholder={t("endDate")}
           />
         </div>
         <div className="relative flex-1">
-          <h5 className="text-neutral-700 pb-3">Tipo de Transação</h5>
+          <h5 className="text-neutral-700 pb-3">{t("transactionType")}</h5>
           <div
             onClick={() =>
               setTransactionType(transactionType === "TED" ? undefined : "TED")
             }
             className="cursor-pointer border rounded-lg p-2 flex justify-between items-center bg-white"
           >
-            <span>{transactionType ? transactionType : "Selecionar"}</span>
+            <span>{transactionType ? transactionType : t("select")}</span>
             <FaSort />
           </div>
           {transactionType && (
@@ -113,13 +116,13 @@ const TransactionPage = () => {
                 onClick={() => setTransactionType(undefined)}
                 className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
               >
-                Todos
+                {t("all")}
               </div>
             </div>
           )}
         </div>
         <div className="relative flex-1">
-          <h5 className="text-neutral-700 pb-3">Ordenar por Data</h5>
+          <h5 className="text-neutral-700 pb-3">{t("sortByDate")}</h5>
           <div className="flex gap-2">
             <button
               onClick={() => setSortByDate("asc")}
@@ -127,7 +130,7 @@ const TransactionPage = () => {
                 sortByDate === "asc" ? "bg-blue-800 text-white" : "bg-white"
               } opacity-90`}
             >
-              Ascendente
+              {t("ascending")}
             </button>
             <button
               onClick={() => setSortByDate("desc")}
@@ -135,17 +138,17 @@ const TransactionPage = () => {
                 sortByDate === "desc" ? "bg-blue-800 text-white" : "bg-white"
               } opacity-90`}
             >
-              Descendente
+              {t("descending")}
             </button>
           </div>
         </div>
         <div className="relative flex-1">
-          <h5 className="text-neutral-700 pb-3">Período</h5>
+          <h5 className="text-neutral-700 pb-3">{t("period")}</h5>
           <div
             onClick={() => setIsPeriodOpen((prev) => !prev)}
             className="cursor-pointer border rounded-lg p-2 flex justify-between items-center bg-white"
           >
-            <span>{period ? `${period} Dias` : "Selecionar Período"}</span>
+            <span>{period ? `${period} ${t("days")}` : t("selectPeriod")}</span>
             <FaSort />
           </div>
           {isPeriodOpen && (
@@ -159,7 +162,7 @@ const TransactionPage = () => {
                   }}
                   className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                 >
-                  {p} Dias
+                  {p} {t("days")}
                 </div>
               ))}
               <div
@@ -169,7 +172,7 @@ const TransactionPage = () => {
                 }}
                 className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
               >
-                Todos
+                {t("all")}
               </div>
             </div>
           )}
@@ -181,13 +184,13 @@ const TransactionPage = () => {
           onClick={clearFilters}
           className="max-w-[180px] bg-neutral-400 text-white px-4 py-2 rounded"
         >
-          Limpar Filtros
+          {t("clearFilters")}
         </button>
         <button
-          onClick={goToTransaction} // Corrected here
+          onClick={goToTransaction}
           className="max-w-[180px] bg-blue-800 text-white px-4 py-2 rounded"
         >
-          Nova Transação
+          {t("newTransaction")}
         </button>
       </div>
 
@@ -206,9 +209,11 @@ const TransactionPage = () => {
               {transactions.map((transaction) => (
                 <div key={transaction.id} className="flex p-3">
                   <div className="flex-1">{transaction.transaction_type}</div>
-                  <div className="flex-1">{transaction.amount.toFixed(2)}</div>
+                  <div className="flex-1">R$ {transaction.amount.toFixed(2)}</div>
                   <div className="flex-1">
-                    {new Date(transaction.transaction_date).toLocaleDateString()}
+                    {new Date(
+                      transaction.transaction_date
+                    ).toLocaleDateString()}
                   </div>
                   <div className="flex-1">{transaction.recipient_name}</div>
                 </div>
@@ -224,17 +229,19 @@ const TransactionPage = () => {
           disabled={page === 1}
           className="bg-blue-800 text-white px-4 py-2 rounded disabled:opacity-50"
         >
-          Anterior
+          {t("previous")}
         </button>
         <span>
-          Página {page} de {meta?.totalPages || 0}
+          {t("page")} {page} {t("of")} {meta?.totalPages || 0}
         </span>
         <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, meta?.totalPages || page))}
+          onClick={() =>
+            setPage((prev) => Math.min(prev + 1, meta?.totalPages || page))
+          }
           disabled={page === meta?.totalPages}
           className="bg-blue-800 text-white px-4 py-2 rounded disabled:opacity-50"
         >
-          Próxima
+          {t("next")}
         </button>
       </div>
     </div>
