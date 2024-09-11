@@ -7,9 +7,16 @@ import { FaSort } from "react-icons/fa";
 const TransactionPage = () => {
   const [page, setPage] = useState(1);
   const [userId, setUserId] = useState<number | null>(null);
-  const [transactionType, setTransactionType] = useState<string | undefined>(undefined);
+  const [transactionType, setTransactionType] = useState<string | undefined>(
+    undefined
+  );
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [sortByDate, setSortByDate] = useState<"asc" | "desc">("asc");
+  const [period, setPeriod] = useState<"7" | "15" | "30" | "90" | undefined>(
+    undefined
+  );
+  const [isPeriodOpen, setIsPeriodOpen] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("user_id");
@@ -24,7 +31,11 @@ const TransactionPage = () => {
     10,
     transactionType,
     startDate,
-    endDate
+    endDate,
+    undefined,
+    undefined,
+    period,
+    sortByDate
   );
 
   useEffect(() => {
@@ -37,10 +48,13 @@ const TransactionPage = () => {
     setTransactionType(undefined);
     setStartDate("");
     setEndDate("");
+    setSortByDate("asc");
+    setPeriod(undefined);
     setPage(1);
   };
 
   const transactionTypes = ["TED", "PIX"];
+  const periods = ["7", "15", "30", "90"];
 
   return (
     <div className="min-h-screen bg-neutral-50 shadow-inner p-4 flex flex-col gap-5">
@@ -98,7 +112,64 @@ const TransactionPage = () => {
             </div>
           )}
         </div>
+        <div className="relative flex-1 cursor-pointer">
+          <h5 className="text-neutral-700 pb-3">Ordenar por Data</h5>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setSortByDate("asc")}
+              className={`border rounded-lg p-2 ${
+                sortByDate === "asc" ? "bg-blue-800 text-white" : "bg-white"
+              } opacity-90`}
+            >
+              Ascendente
+            </button>
+            <button
+              onClick={() => setSortByDate("desc")}
+              className={`border rounded-lg p-2 ${
+                sortByDate === "desc" ? "bg-blue-800 text-white" : "bg-white"
+              } opacity-90`}
+            >
+              Descendente
+            </button>
+          </div>
+        </div>
+        <div className="relative flex-1 cursor-pointer">
+          <h5 className="text-neutral-700 pb-3">Período</h5>
+          <div
+            onClick={() => setIsPeriodOpen((prev) => !prev)}
+            className="cursor-pointer border rounded-lg p-2 flex justify-between items-center bg-white"
+          >
+            <span>{period ? `${period} Dias` : "Selecionar Período"}</span>
+            <FaSort />
+          </div>
+          {isPeriodOpen && (
+            <div className="absolute mt-1 bg-white border rounded-lg shadow-lg z-10">
+              {periods.map((p) => (
+                <div
+                  key={p}
+                  onClick={() => {
+                    setPeriod(p as "7" | "15" | "30" | "90");
+                    setIsPeriodOpen(false);
+                  }}
+                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                >
+                  {p} Dias
+                </div>
+              ))}
+              <div
+                onClick={() => {
+                  setPeriod(undefined);
+                  setIsPeriodOpen(false);
+                }}
+                className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              >
+                Todos
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
       <button
         onClick={clearFilters}
         className="max-w-[180px] bg-neutral-400 text-white px-4 py-2 rounded"
@@ -123,7 +194,9 @@ const TransactionPage = () => {
                   <div className="flex-1">{transaction.transaction_type}</div>
                   <div className="flex-1">{transaction.amount.toFixed(2)}</div>
                   <div className="flex-1">
-                    {new Date(transaction.transaction_date).toLocaleDateString()}
+                    {new Date(
+                      transaction.transaction_date
+                    ).toLocaleDateString()}
                   </div>
                   <div className="flex-1">{transaction.recipient_name}</div>
                 </div>

@@ -122,7 +122,7 @@ const useUserTransactions = (
   endDate?: string,
   minAmount?: number,
   maxAmount?: number,
-  period?: number,
+  period?: string,
   sortByDate?: "asc" | "desc"
 ) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
