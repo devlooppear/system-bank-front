@@ -34,7 +34,7 @@ const RegisterPage = () => {
 
   return (
     <>
-      <ToastContainer /> {/* Adiciona o container para os toasts */}
+      <ToastContainer /> 
       <div className="min-h-screen bg-gradient-to-t from-blue-500 to-blue-100 flex items-center justify-center">
         <div className="absolute top-[12rem] bg-white rounded-lg shadow-lg p-8 max-w-[90%] w-[480px]">
           <img
