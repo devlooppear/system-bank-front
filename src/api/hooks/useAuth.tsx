@@ -1,62 +1,50 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import apiService from "../apiService";
-
-export interface LoginResponse {
-  message: string;
-  user_id: number;
-  token: string;
-}
+import { AppDispatch, RootState } from "../../store/store";
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  logout,
+} from "../../store/authSlice";
 
 const useAuth = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const login = async (email: string, password: string) => {
-    setLoading(true);
-    setError(null);
+    dispatch(loginStart());
 
     try {
-      const response = await apiService.post<LoginResponse>("auth/login", {
-        email,
-        password,
-      });
+      const response = await apiService.post("auth/login", { email, password });
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user_id", response.data.user_id.toString());
+      const { token, user_id } = response.data;
+      dispatch(loginSuccess({ token, user_id }));
 
       return response.data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
+      dispatch(
+        loginFailure(err instanceof Error ? err.message : "An error occurred")
+      );
     }
   };
 
-  const logout = async () => {
-    setLoading(true);
-    setError(null);
-
-    const userId = localStorage.getItem("user_id");
+  const logoutUser = async () => {
+    const userId = useSelector((state: RootState) => state.auth.user_id);
 
     try {
       if (userId) {
-        await apiService.post("auth/logout", { user_id: Number(userId) });
-
-        localStorage.removeItem("token");
-        localStorage.removeItem("user_id");
-
-        return { message: "User logged out" };
+        await apiService.post("auth/logout", { user_id: userId });
+        dispatch(logout());
       } else {
         throw new Error("User ID not found");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
+      console.error(err instanceof Error ? err.message : "An error occurred");
     }
   };
 
-  return { login, logout, loading, error };
+  return { login, logout: logoutUser, loading, error };
 };
 
 export default useAuth;

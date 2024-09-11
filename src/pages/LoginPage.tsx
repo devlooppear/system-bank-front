@@ -1,18 +1,22 @@
 import { useState } from "react";
+import useAuth from "../api/hooks/useAuth";
 import logoMetisBank from "/logo/android-chrome-512x512.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, loading, error } = useAuth();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    await login(email, password);
   };
 
   return (
     <>
       <div className="min-h-screen bg-gradient-to-t from-blue-500 to-blue-100 flex items-center justify-center">
-        <div className="absolute top-[12rem] bg-white rounded-lg shadow-lg p-8   max-w-[90%] w-[480px]">
+        <div className="absolute top-[12rem] bg-white rounded-lg shadow-lg p-8 max-w-[90%] w-[480px]">
           <img
             src={logoMetisBank}
             alt="logo-metis-bank"
@@ -56,11 +60,13 @@ const LoginPage = () => {
                 required
               />
             </div>
+            {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-800 to-blue-950 text-white font-semibold py-2 rounded-lg transition duration-300 hover:from-blue-600 hover:to-blue-400"
+              disabled={loading}
             >
-              Entrar
+              {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
           <div className="text-center mt-4">
