@@ -6,6 +6,8 @@ import useTransaction, {
   TransactionType,
 } from "../../api/hooks/useTransaction";
 import { BANK_ACCOUNTS } from "./static/banks";
+import { useUserById } from "../../api/hooks/useUser";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const CreateTransactionPage = () => {
   const [amount, setAmount] = useState<number>(0);
@@ -17,19 +19,45 @@ const CreateTransactionPage = () => {
   const [accountRecipient, setAccountRecipient] = useState<string>("");
   const [pixKey, setPixKey] = useState<string>("");
   const [transactionPassword, setTransactionPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
   const [recipientDocumentType, setRecipientDocumentType] = useState<
     "CNPJ" | "CPF"
   >("CNPJ");
   const [recipientDocument, setRecipientDocument] = useState<string>("");
+  const [showBalance, setShowBalance] = useState<boolean>(false);
 
   const { createTransaction } = useTransaction();
-  const navigate = useNavigate();
+  useNavigate();
+
+  const user_id = localStorage.getItem("user_id");
+  const { user } = useUserById(user_id ? parseInt(user_id) : 0);
+
+  const MIN_TRANSACTION_AMOUNT = 1;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (amount < MIN_TRANSACTION_AMOUNT) {
+      toast.error(
+        `O valor mínimo para a transação é R$ ${MIN_TRANSACTION_AMOUNT.toFixed(
+          1
+        )}.`
+      );
+      return;
+    }
+
+    if (
+      !recipientName ||
+      !accountRecipient ||
+      !pixKey ||
+      !transactionPassword
+    ) {
+      toast.error("Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
+
     const transactionData = {
+      user_id: user_id,
       transaction_type: transactionType,
       amount: parseFloat(amount.toFixed(2)),
       transaction_date: new Date().toISOString(),
@@ -76,6 +104,32 @@ const CreateTransactionPage = () => {
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
             Criar Transação
           </h2>
+          {user?.accounts && user.accounts.length > 0 && (
+            <div className="flex items-center justify-center align-middle">
+              <p className="text-gray-700 mb-4">
+                <strong>Saldo:</strong>{" "}
+                {showBalance ? (
+                  <span>R$ {user.accounts[0].balance}</span>
+                ) : (
+                  <span className="bg-neutral-200 rounded-sm px-2 py-1 min-w-[10px]">
+                    {".".repeat(String(user.accounts[0].balance).length + 5)}{" "}
+                  </span>
+                )}{" "}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => setShowBalance(!showBalance)}
+                className="mx-2 mb-4"
+              >
+                {showBalance ? (
+                  <AiOutlineEyeInvisible size={19} />
+                ) : (
+                  <AiOutlineEye size={19} />
+                )}{" "}
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -156,32 +210,20 @@ const CreateTransactionPage = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Tipo de Documento
               </label>
-              <div className="flex space-x-2 mb-4">
-                <button
-                  type="button"
-                  onClick={() => setRecipientDocumentType("CNPJ")}
-                  className={`border rounded-lg p-2 ${
-                    recipientDocumentType === "CNPJ"
-                      ? "bg-blue-800 text-white"
-                      : "bg-white"
-                  } opacity-90`}
-                >
-                  CNPJ
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRecipientDocumentType("CPF")}
-                  className={`border rounded-lg p-2 ${
-                    recipientDocumentType === "CPF"
-                      ? "bg-blue-800 text-white"
-                      : "bg-white"
-                  } opacity-90`}
-                >
-                  CPF
-                </button>
-              </div>
+              <select
+                value={recipientDocumentType}
+                onChange={(e) =>
+                  setRecipientDocumentType(e.target.value as "CNPJ" | "CPF")
+                }
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="CNPJ">CNPJ</option>
+                <option value="CPF">CPF</option>
+              </select>
+            </div>
+            <div>
               <label className="block text-sm font-medium text-gray-700">
-                {recipientDocumentType === "CNPJ" ? "CNPJ" : "CPF"}
+                Documento do Destinatário
               </label>
               <input
                 type="text"
@@ -207,7 +249,7 @@ const CreateTransactionPage = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-800 to-blue-950 text-white font-semibold py-2 rounded-lg transition duration-300 hover:from-blue-700 hover:to-blue-800"
+              className="w-full bg-blue-700 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               disabled={loading}
             >
               {loading ? "Criando..." : "Criar Transação"}
