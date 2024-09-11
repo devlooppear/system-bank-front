@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useAuth from "../api/hooks/useAuth";
 import logoMetisBank from "/logo/android-chrome-512x512.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading, error } = useAuth();
+  const { login, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -14,12 +16,18 @@ const LoginPage = () => {
 
     const response = await login(email, password);
     if (response) {
+      toast.success("Login realizado com sucesso!");
       navigate("/main-page");
+    } else {
+      toast.error(
+        "Desculpe, ocorreu um erro. Verifique os dados e tente novamente."
+      );
     }
   };
 
   return (
     <>
+      <ToastContainer />
       <div className="min-h-screen bg-gradient-to-t from-blue-500 to-blue-100 flex items-center justify-center">
         <div className="absolute top-[12rem] bg-white rounded-lg shadow-lg p-8 max-w-[90%] w-[480px]">
           <img
@@ -65,7 +73,6 @@ const LoginPage = () => {
                 required
               />
             </div>
-            {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-800 to-blue-950 text-white font-semibold py-2 rounded-lg transition duration-300 hover:from-blue-600 hover:to-blue-400"

@@ -1,17 +1,40 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logoMetisBank from "/logo/android-chrome-512x512.png";
+import { useCreateUser } from "../api/hooks/useUser";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const { createUser, loading } = useCreateUser();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("As senhas não coincidem.");
+      return;
+    }
+
+    const userData = { email, password, name };
+
+    const result = await createUser(userData);
+    if (result) {
+      toast.success("Usuário criado com sucesso!");
+      navigate("/login");
+    } else {
+      toast.error("Erro ao criar usuário.");
+    }
   };
 
   return (
     <>
+      <ToastContainer /> {/* Adiciona o container para os toasts */}
       <div className="min-h-screen bg-gradient-to-t from-blue-500 to-blue-100 flex items-center justify-center">
         <div className="absolute top-[12rem] bg-white rounded-lg shadow-lg p-8 max-w-[90%] w-[480px]">
           <img
@@ -23,6 +46,23 @@ const RegisterPage = () => {
             Crie Sua Conta
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Nome
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Digite seu nome"
+                required
+              />
+            </div>
             <div>
               <label
                 htmlFor="email"
@@ -77,8 +117,9 @@ const RegisterPage = () => {
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-800 to-blue-950 text-white font-semibold py-2 rounded-lg transition duration-300 hover:from-blue-600 hover:to-blue-400"
+              disabled={loading}
             >
-              Registrar
+              {loading ? "Registrando..." : "Registrar"}
             </button>
           </form>
           <div className="text-center mt-4">
