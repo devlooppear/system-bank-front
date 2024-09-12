@@ -77,5 +77,8 @@
   "allRequiredFieldsMustBeFilled": "Todos os campos obrigatórios devem ser preenchidos.",
   "minimumTransactionAmount": "O valor mínimo para a transação é R$ {{amount}}",
   "transactionDetails": "Detalhes da Transação",
-  "close": "Fechar"
+  "close": "Fechar",
+  "errorCreatingTransactionTryAgain": "Erro ao criar a transação. Tente novamente.",
+  "invalidCPF": "CPF inválido.",
+  "invalidCNPJ": "CNPJ inválido."
 }

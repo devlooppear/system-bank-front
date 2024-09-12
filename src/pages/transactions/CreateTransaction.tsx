@@ -41,8 +41,24 @@ const CreateTransactionPage = () => {
 
     if (amount < MIN_TRANSACTION_AMOUNT) {
       toast.error(
-        `${t("minimumTransactionAmount", { amount: MIN_TRANSACTION_AMOUNT.toFixed(1) })}`
+        `${t("minimumTransactionAmount", {
+          amount: MIN_TRANSACTION_AMOUNT.toFixed(1),
+        })}`
       );
+      return;
+    }
+
+    if (user?.accounts && user.accounts.length > 0) {
+      const userBalance = user.accounts[0].balance;
+
+      if (amount > userBalance) {
+        toast.error(
+          `${t("insufficientFunds", { balance: userBalance.toFixed(2) })}`
+        );
+        return;
+      }
+    } else {
+      toast.error(t("noAccountAvailable"));
       return;
     }
 
@@ -53,6 +69,36 @@ const CreateTransactionPage = () => {
       !transactionPassword
     ) {
       toast.error(t("allRequiredFieldsMustBeFilled"));
+      return;
+    }
+
+    if (recipientName.trim().length < 3) {
+      toast.error(t("recipientNameTooShort"));
+      return;
+    }
+
+    if (recipientDocumentType === "CPF" && !isValidCPF(recipientDocument)) {
+      toast.error(t("invalidCPF"));
+      return;
+    }
+
+    if (recipientDocumentType === "CNPJ" && !isValidCNPJ(recipientDocument)) {
+      toast.error(t("invalidCNPJ"));
+      return;
+    }
+
+    if (amount <= 0) {
+      toast.error(t("transactionAmountMustBePositive"));
+      return;
+    }
+
+    if (transactionPassword.length < 6) {
+      toast.error(t("transactionPasswordTooShort"));
+      return;
+    }
+
+    if (accountRecipient.trim().length < 5) {
+      toast.error(t("accountRecipientTooShort"));
       return;
     }
 
@@ -85,6 +131,64 @@ const CreateTransactionPage = () => {
       console.error(error);
       toast.error(t("errorCreatingTransactionTryAgain"));
     }
+  };
+
+  const isValidCPF = (cpf: string) => {
+    cpf = cpf.replace(/\D/g, "");
+
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+      return false;
+    }
+
+    let sum = 0;
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cpf[i - 1]) * (11 - i);
+    }
+    let firstCheck = (sum * 10) % 11;
+    if (firstCheck === 10 || firstCheck === 11) {
+      firstCheck = 0;
+    }
+    if (firstCheck !== parseInt(cpf[9])) {
+      return false;
+    }
+
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cpf[i - 1]) * (12 - i);
+    }
+    let secondCheck = (sum * 10) % 11;
+    if (secondCheck === 10 || secondCheck === 11) {
+      secondCheck = 0;
+    }
+    return secondCheck === parseInt(cpf[10]);
+  };
+
+  const isValidCNPJ = (cnpj: string) => {
+    cnpj = cnpj.replace(/\D/g, "");
+
+    if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) {
+      return false;
+    }
+
+    let sum = 0;
+    for (let i = 1; i <= 12; i++) {
+      sum += parseInt(cnpj[i - 1]) * (i <= 4 ? 5 : 6);
+    }
+    let firstCheck = sum % 11;
+    firstCheck = firstCheck < 2 ? 0 : 11 - firstCheck;
+
+    if (firstCheck !== parseInt(cnpj[12])) {
+      return false;
+    }
+
+    sum = 0;
+    for (let i = 1; i <= 13; i++) {
+      sum += parseInt(cnpj[i - 1]) * (i <= 5 ? 6 : 7);
+    }
+    let secondCheck = sum % 11;
+    secondCheck = secondCheck < 2 ? 0 : 11 - secondCheck;
+
+    return secondCheck === parseInt(cnpj[13]);
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {

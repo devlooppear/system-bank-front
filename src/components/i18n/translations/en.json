@@ -77,5 +77,8 @@
   "allRequiredFieldsMustBeFilled": "All required fields must be filled.",
   "minimumTransactionAmount": "The minimum amount for the transaction is R$ {{amount}}",
   "transactionDetails": "Transaction Details",
-  "close": "Close"
+  "close": "Close",
+  "errorCreatingTransactionTryAgain": "Error creating the transaction. Please try again.",
+  "invalidCPF": "Invalid CPF.",
+  "invalidCNPJ": "Invalid CNPJ."
 }
