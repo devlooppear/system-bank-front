@@ -8,7 +8,7 @@ interface RecentTransactionsProps {
 }
 
 const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { transactions, loading, error } = useUserTransactions(userId, 1, 6);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +23,15 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedTransaction(null);
+  };
+
+  const formatDate = (dateString: string) => {
+    const locale = i18n.language || "pt-BR";
+    return new Intl.DateTimeFormat(locale, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(dateString));
   };
 
   if (loading) {
@@ -61,7 +70,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
               <div className="flex-1">{transaction.transaction_type}</div>
               <div className="flex-1">R$ {transaction.amount.toFixed(2)}</div>
               <div className="flex-1">
-                {new Date(transaction.transaction_date).toLocaleDateString()}
+                {formatDate(transaction.transaction_date)}{" "}
               </div>
               <div className="flex-1">{transaction.recipient_name}</div>
             </div>
@@ -85,9 +94,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
             </p>
             <p>
               <strong>{t("transactionDate")}:</strong>{" "}
-              {new Date(
-                selectedTransaction.transaction_date
-              ).toLocaleDateString()}
+              {formatDate(selectedTransaction.transaction_date)}
             </p>
             <p>
               <strong>{t("transactionRecipient")}:</strong>{" "}

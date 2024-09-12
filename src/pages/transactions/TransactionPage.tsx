@@ -27,7 +27,7 @@ const TransactionPage = () => {
     }
   }, []);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { transactions, loading, error, meta } = useUserTransactions(
     userId as number,
@@ -64,6 +64,15 @@ const TransactionPage = () => {
 
   const transactionTypes = ["TED", "PIX"];
   const periods = ["7", "15", "30", "90"];
+
+  const formatDate = (dateString: string) => {
+    const locale = i18n.language || "pt-BR";
+    return new Intl.DateTimeFormat(locale, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(dateString));
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50 shadow-inner p-4 flex flex-col gap-5">
@@ -209,11 +218,11 @@ const TransactionPage = () => {
               {transactions.map((transaction) => (
                 <div key={transaction.id} className="flex p-3">
                   <div className="flex-1">{transaction.transaction_type}</div>
-                  <div className="flex-1">R$ {transaction.amount.toFixed(2)}</div>
                   <div className="flex-1">
-                    {new Date(
-                      transaction.transaction_date
-                    ).toLocaleDateString()}
+                    R$ {transaction.amount.toFixed(2)}
+                  </div>
+                  <div className="flex-1">
+                    {formatDate(transaction.transaction_date)}{" "}
                   </div>
                   <div className="flex-1">{transaction.recipient_name}</div>
                 </div>
