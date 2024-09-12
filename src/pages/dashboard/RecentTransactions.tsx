@@ -68,7 +68,13 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ userId }) => {
               onClick={() => handleRowClick(transaction)}
             >
               <div className="flex-1">{transaction.transaction_type}</div>
-              <div className="flex-1">R$ {transaction.amount.toFixed(2)}</div>
+              <div className="flex-1">
+                R${" "}
+                {new Intl.NumberFormat("pt-BR", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(transaction.amount)}
+              </div>
               <div className="flex-1">
                 {formatDate(transaction.transaction_date)}{" "}
               </div>
