@@ -7,7 +7,7 @@ import TransactionPage from "./pages/transactions/TransactionPage";
 import TransactionDetailPage from "./pages/TransactionDetailPage";
 import CreateTransactionPage from "./pages/transactions/CreateTransaction";
 import NoPage from "./pages/NoPage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {

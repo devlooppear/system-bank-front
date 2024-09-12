@@ -75,5 +75,7 @@
   "errorCreatingTransaction": "Error creating transaction.",
   "transactionCreatedSuccessfully": "Transaction created successfully!",
   "allRequiredFieldsMustBeFilled": "All required fields must be filled.",
-  "minimumTransactionAmount": "The minimum amount for the transaction is R$ {{amount}}"
+  "minimumTransactionAmount": "The minimum amount for the transaction is R$ {{amount}}",
+  "transactionDetails": "Transaction Details",
+  "close": "Close"
 }

@@ -75,5 +75,7 @@
   "errorCreatingTransaction": "Error al crear la transacción.",
   "transactionCreatedSuccessfully": "¡Transacción creada con éxito!",
   "allRequiredFieldsMustBeFilled": "Todos los campos obligatorios deben ser completados.",
-  "minimumTransactionAmount": "El monto mínimo para la transacción es R$ {{amount}}"
+  "minimumTransactionAmount": "El monto mínimo para la transacción es R$ {{amount}}",
+  "transactionDetails": "Detalles de la Transacción",
+  "close": "Cerrar"
 }
