@@ -102,6 +102,18 @@ const CreateTransactionPage = () => {
       return;
     }
 
+    if (transactionType === TransactionType.PIX) {
+      if (pixKey.length < 6) {
+        toast.error(t("pixKeyTooShort"));
+        return;
+      }
+
+      if (!isValidPixKey(pixKey)) {
+        toast.error(t("invalidPixKey"));
+        return;
+      }
+    }
+
     const transactionData = {
       user_id: userId,
       transaction_type: transactionType,
@@ -131,6 +143,24 @@ const CreateTransactionPage = () => {
       console.error(error);
       toast.error(t("errorCreatingTransactionTryAgain"));
     }
+  };
+
+  const isValidPixKey = (key: string) => {
+    const trimmedKey = key.trim();
+
+    const isCpf = /^\d{11}$/.test(trimmedKey) && isValidCPF(trimmedKey);
+
+    const isCnpj = /^\d{14}$/.test(trimmedKey) && isValidCNPJ(trimmedKey);
+
+    const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+      trimmedKey
+    );
+
+    const isPhoneNumber = /^\+?\d{10,15}$/.test(trimmedKey);
+
+    const isRandomKey = /^[a-zA-Z0-9]{32}$/.test(trimmedKey);
+
+    return isCpf || isCnpj || isEmail || isPhoneNumber || isRandomKey;
   };
 
   const isValidCPF = (cpf: string) => {
@@ -297,19 +327,21 @@ const CreateTransactionPage = () => {
                 ))}
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                {t("pixKey")}
-              </label>
-              <input
-                type="text"
-                value={pixKey}
-                onChange={(e) => setPixKey(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder={t("enterPixKey")}
-                required
-              />
-            </div>
+            {transactionType === TransactionType.PIX && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  {t("pixKey")}
+                </label>
+                <input
+                  type="text"
+                  value={pixKey}
+                  onChange={(e) => setPixKey(e.target.value)}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder={t("enterPixKey")}
+                  required
+                />
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 {t("documentType")}
