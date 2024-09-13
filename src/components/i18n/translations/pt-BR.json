@@ -80,5 +80,29 @@
   "close": "Fechar",
   "errorCreatingTransactionTryAgain": "Erro ao criar a transação. Tente novamente.",
   "invalidCPF": "CPF inválido.",
-  "invalidCNPJ": "CNPJ inválido."
+  "invalidCNPJ": "CNPJ inválido.",
+  "login": {
+    "success": "Login realizado com sucesso!",
+    "error-login": "Desculpe, ocorreu um erro. Verifique os dados e tente novamente.",
+    "access-account": "Acesse Sua Conta",
+    "email": "E-mail",
+    "email-placeholder": "Digite seu e-mail",
+    "password": "Senha",
+    "password-placeholder": "Digite sua senha",
+    "loading": "Entrando...",
+    "enter": "Entrar",
+    "no-account": "Não tem uma conta? Crie uma agora."
+  },
+  "register": {
+    "success": "Usuário criado com sucesso!",
+    "error-create": "Erro ao criar usuário.",
+    "access-account": "Crie Sua Conta",
+    "name": "Nome",
+    "name-placeholder": "Digite seu nome",
+    "confirm-password": "Confirmar Senha",
+    "confirm-password-placeholder": "Confirme sua senha",
+    "loading": "Registrando...",
+    "register": "Registrar",
+    "already-have-account": "Já tem uma conta? Faça login."
+  }
 }

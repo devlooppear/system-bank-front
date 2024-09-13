@@ -10,14 +10,16 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isWideScreen, setIsWideScreen] = useState(
-    window.innerWidth > window.innerHeight
-  );
+  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > window.innerHeight);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const token = localStorage.getItem("authToken");
 
   const routesWithoutLogout = ["/login", "/register", "/"];
+  const navItems = [
+    { to: "/login", label: "Access Account", show: !token || routesWithoutLogout.includes(location.pathname) },
+    { to: "/register", label: "Open Account", show: !token || routesWithoutLogout.includes(location.pathname) },
+  ];
 
   const handleLogout = async () => {
     await logout();
@@ -34,7 +36,6 @@ const NavBar = () => {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -50,39 +51,32 @@ const NavBar = () => {
             alt="metis-bank-logo"
           />
         </Link>
-        <ul className="flex gap-3 mx-3 justify-center align-middle items-center">
-          {!token || routesWithoutLogout.includes(location.pathname) ? (
-            <>
-              <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
-                <NavLink to="/login">Access Account</NavLink>
-              </li>
-              <li className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
-                <NavLink to="/register">Open Account</NavLink>
-              </li>
-            </>
-          ) : (
+        <ul className="flex gap-3 mx-3 justify-center items-center">
+          {navItems.map(
+            (item) =>
+              item.show && (
+                <li key={item.to} className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer">
+                  <NavLink to={item.to}>{item.label}</NavLink>
+                </li>
+              )
+          )}
+          {token && (
             <li
               className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer flex items-center text-center h-[71%]"
               title="logout"
               onClick={handleLogout}
             >
-              {isWideScreen ? (
-                "Logout"
-              ) : (
-                <FaSignOutAlt size={18} className="text-neutral-700" />
-              )}
+              {isWideScreen ? "Logout" : <FaSignOutAlt size={18} className="text-neutral-700" />}
             </li>
           )}
           <LanguageSwitcher />
-          {!isWideScreen ? (
+          {!isWideScreen && (
             <button
               onClick={toggleModal}
               className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer flex items-center text-center h-[70%]"
             >
               {isModalOpen ? <FaTimes /> : <FaBars />}
             </button>
-          ) : (
-            ""
           )}
         </ul>
       </nav>
@@ -98,71 +92,23 @@ const NavBar = () => {
             </div>
             <nav>
               <ul className="space-y-4">
-                <li>
-                  <NavLink
-                    to="/dashboard"
-                    onClick={toggleModal}
-                    className={({ isActive }) =>
-                      `block px-4 py-2 rounded-lg ${
-                        isActive
-                          ? "bg-gray-700 text-white"
-                          : "hover:bg-gray-600 text-gray-800"
-                      }`
-                    }
-                  >
-                    Dashboard
-                  </NavLink>
-                </li>
-                {token && (
-                  <li>
-                    <NavLink
-                      to="/transaction"
-                      onClick={toggleModal}
-                      className={({ isActive }) =>
-                        `block px-4 py-2 rounded-lg ${
-                          isActive
-                            ? "bg-gray-700 text-white"
-                            : "hover:bg-gray-600 text-gray-800"
-                        }`
-                      }
-                    >
-                      Transactions
-                    </NavLink>
-                  </li>
-                )}
-                {!token && (
-                  <>
-                    <li>
-                      <NavLink
-                        to="/login"
-                        onClick={toggleModal}
-                        className={({ isActive }) =>
-                          `block px-4 py-2 rounded-lg ${
-                            isActive
-                              ? "bg-gray-700 text-white"
-                              : "hover:bg-gray-600 text-gray-800"
-                          }`
-                        }
-                      >
-                        Login
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/register"
-                        onClick={toggleModal}
-                        className={({ isActive }) =>
-                          `block px-4 py-2 rounded-lg ${
-                            isActive
-                              ? "bg-gray-700 text-white"
-                              : "hover:bg-gray-600 text-gray-800"
-                          }`
-                        }
-                      >
-                        Register
-                      </NavLink>
-                    </li>
-                  </>
+                {navItems.map(
+                  (item) =>
+                    item.show && (
+                      <li key={item.to}>
+                        <NavLink
+                          to={item.to}
+                          onClick={toggleModal}
+                          className={({ isActive }) =>
+                            `block px-4 py-2 rounded-lg ${
+                              isActive ? "bg-gray-700 text-white" : "hover:bg-gray-600 text-gray-800"
+                            }`
+                          }
+                        >
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    )
                 )}
               </ul>
             </nav>

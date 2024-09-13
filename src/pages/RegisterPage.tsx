@@ -4,6 +4,7 @@ import logoMetisBank from "/logo/android-chrome-512x512.png";
 import { useCreateUser } from "../api/hooks/useUser";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -12,12 +13,13 @@ const RegisterPage = () => {
   const [name, setName] = useState("");
   const { createUser, loading } = useCreateUser();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error("As senhas não coincidem.");
+      toast.error(t("register.error-create"));
       return;
     }
 
@@ -25,16 +27,16 @@ const RegisterPage = () => {
 
     const result = await createUser(userData);
     if (result) {
-      toast.success("Usuário criado com sucesso!");
+      toast.success(t("register.success"));
       navigate("/login");
     } else {
-      toast.error("Erro ao criar usuário.");
+      toast.error(t("register.error-create"));
     }
   };
 
   return (
     <>
-      <ToastContainer /> 
+      <ToastContainer />
       <div className="min-h-screen bg-gradient-to-t from-blue-500 to-blue-100 flex items-center justify-center">
         <div className="absolute top-[12rem] bg-white rounded-lg shadow-lg p-8 max-w-[90%] w-[480px]">
           <img
@@ -43,7 +45,7 @@ const RegisterPage = () => {
             className="rounded-full shadow-lg mx-auto w-32 mb-4"
           />
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Crie Sua Conta
+            {t("register.access-account")}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -51,7 +53,7 @@ const RegisterPage = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
-                Nome
+                {t("register.name")}
               </label>
               <input
                 type="text"
@@ -59,7 +61,7 @@ const RegisterPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Digite seu nome"
+                placeholder={t("register.name-placeholder")}
                 required
               />
             </div>
@@ -68,7 +70,7 @@ const RegisterPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                E-mail
+                {t("login.email")}
               </label>
               <input
                 type="email"
@@ -76,7 +78,7 @@ const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Digite seu e-mail"
+                placeholder={t("login.email-placeholder")}
                 required
               />
             </div>
@@ -85,7 +87,7 @@ const RegisterPage = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
-                Senha
+                {t("login.password")}{" "}
               </label>
               <input
                 type="password"
@@ -93,7 +95,7 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Digite sua senha"
+                placeholder={t("login.password-placeholder")}
                 required
               />
             </div>
@@ -102,7 +104,7 @@ const RegisterPage = () => {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700"
               >
-                Confirmar Senha
+                {t("register.confirm-password")}{" "}
               </label>
               <input
                 type="password"
@@ -110,7 +112,7 @@ const RegisterPage = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Confirme sua senha"
+                placeholder={t("register.confirm-password-placeholder")}
                 required
               />
             </div>
@@ -119,12 +121,12 @@ const RegisterPage = () => {
               className="w-full bg-gradient-to-r from-blue-800 to-blue-950 text-white font-semibold py-2 rounded-lg transition duration-300 hover:from-blue-600 hover:to-blue-400"
               disabled={loading}
             >
-              {loading ? "Registrando..." : "Registrar"}
+              {loading ? t("register.loading") : t("register.register")}{" "}
             </button>
           </form>
           <div className="text-center mt-4">
             <a href="/login" className="text-blue-600 hover:underline">
-              Já tem uma conta? Faça login.
+              {t("register.already-have-account")}{" "}
             </a>
           </div>
         </div>

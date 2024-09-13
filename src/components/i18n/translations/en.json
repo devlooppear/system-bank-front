@@ -80,5 +80,29 @@
   "close": "Close",
   "errorCreatingTransactionTryAgain": "Error creating the transaction. Please try again.",
   "invalidCPF": "Invalid CPF.",
-  "invalidCNPJ": "Invalid CNPJ."
+  "invalidCNPJ": "Invalid CNPJ.",
+  "login": {
+    "success": "Login successful!",
+    "error-login": "Sorry, an error occurred. Please check your details and try again.",
+    "access-account": "Access Your Account",
+    "email": "Email",
+    "email-placeholder": "Enter your email",
+    "password": "Password",
+    "password-placeholder": "Enter your password",
+    "loading": "Logging in...",
+    "enter": "Login",
+    "no-account": "Don't have an account? Create one now."
+  },
+  "register": {
+    "success": "User created successfully!",
+    "error-create": "Error creating user.",
+    "access-account": "Create Your Account",
+    "name": "Name",
+    "name-placeholder": "Enter your name",
+    "confirm-password": "Confirm Password",
+    "confirm-password-placeholder": "Confirm your password",
+    "loading": "Registering...",
+    "register": "Register",
+    "already-have-account": "Already have an account? Log in."
+  }
 }
