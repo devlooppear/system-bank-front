@@ -1,8 +1,7 @@
 import apiService from "../../api/apiService";
 import { describe, it, expect, beforeEach } from "vitest";
-import { AxiosRequestConfig } from "axios";
 
-const applyRequestInterceptor = (config: AxiosRequestConfig) => {
+const applyRequestInterceptor = (config) => {
   const token = localStorage.getItem("authToken");
   if (token) {
     config.headers = {
@@ -20,9 +19,7 @@ describe("apiService", () => {
 
   it("should have the correct base URL and headers", () => {
     expect(apiService.defaults.baseURL).toBe(import.meta.env.VITE_API_URL);
-    expect(apiService.defaults.headers["Content-Type"]).toBe(
-      "application/json"
-    );
+    expect(apiService.defaults.headers["Content-Type"]).toBe("application/json");
     expect(apiService.defaults.headers["Accept"]).toBe("application/json");
   });
 
@@ -30,7 +27,7 @@ describe("apiService", () => {
     const mockToken = "mockToken123";
     localStorage.setItem("authToken", mockToken);
 
-    const requestConfig: AxiosRequestConfig = {
+    const requestConfig = {
       headers: {},
     };
 
@@ -46,8 +43,6 @@ describe("apiService", () => {
       throw error;
     };
 
-    await expect(apiService.get("/some-endpoint")).rejects.toThrow(
-      "Request failed"
-    );
+    await expect(apiService.get("/some-endpoint")).rejects.toThrow("Request failed");
   });
 });
