@@ -39,6 +39,13 @@ cp .env.example .env
 npm run dev
 ```
 
+## 🆕 Default User
+
+If you want to skip the registration step, you can use the following default user for authentication:
+
+Email: dev@metisbank.com
+Password: password
+
 The application will be available at http://localhost:5173 (or on the port specified in your Vite configuration).
 
 ## 🔑 Authentication

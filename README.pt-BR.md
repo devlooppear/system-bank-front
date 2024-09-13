@@ -41,6 +41,13 @@ npm run dev
 
 A aplicação estará disponível em http://localhost:5173 (ou na porta especificada na sua configuração do Vite).
 
+## 🆕 Usuário Padrão
+
+Se você deseja pular a etapa de registro, pode usar o seguinte usuário padrão para autenticação:
+
+Email: dev@metisbank.com
+Senha: password
+
 ## 🔑 Authentication
 
 Certifique-se de que seu servidor backend esteja em execução e devidamente configurado. Pode ser necessário implementar a funcionalidade de login do usuário para obter um token JWT para fazer solicitações à API do backend.
