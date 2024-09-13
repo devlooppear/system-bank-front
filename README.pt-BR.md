@@ -52,6 +52,18 @@ Senha: password
 
 Certifique-se de que seu servidor backend esteja em execução e devidamente configurado. Pode ser necessário implementar a funcionalidade de login do usuário para obter um token JWT para fazer solicitações à API do backend.
 
+## 🧪 Testes
+
+Para garantir a qualidade e a funcionalidade do seu código, o projeto utiliza Jest em conjunto com Vitest para realizar testes automatizados. A seguir, estão as instruções para executar os testes e algumas informações adicionais.
+
+### Execução dos Testes
+
+Para rodar os testes, execute o seguinte comando:
+
+```bash
+npm run test
+```
+
 ## 🛠️ Features
 
 - Gerenciamento de Usuários: Funcionalidade de registro e login para usuários.

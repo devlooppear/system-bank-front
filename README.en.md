@@ -52,6 +52,18 @@ The application will be available at http://localhost:5173 (or on the port speci
 
 Make sure your backend server is running and properly configured. You may need to implement user login functionality to obtain a JWT token for making requests to the backend API.
 
+## 🧪 Testing
+
+To ensure the quality and functionality of your code, the project uses Jest in conjunction with Vitest for automated testing. Below are the instructions for running the tests and some additional information.
+
+### Running the Tests
+
+To run the tests, use the following command:
+
+```bash
+npm run test
+```
+
 ## 🛠️ Features
 
 - User Management: Registration and login functionality for users.
@@ -60,6 +72,7 @@ Make sure your backend server is running and properly configured. You may need t
 - Internationalization: Support for languages such as English, Spanish, and Portuguese.
 
 ## 📦 Dependencies
+
 - Vite: Build tool for rapid development.
 - React: JavaScript library for building user interfaces.
 - React Router: For routing within the application.
