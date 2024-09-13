@@ -104,5 +104,19 @@
     "loading": "Registrando...",
     "register": "Registrar",
     "already-have-account": "¿Ya tienes una cuenta? Inicia sesión."
+  },
+  "navbar": {
+    "access-account": "Acceder a la Cuenta",
+    "open-account": "Abrir Cuenta"
+  },
+  "footer": {
+    "contact": "Contacto",
+    "email": "Email: contacto@metisbank.com",
+    "phone": "Teléfono: (11) 1234-5678",
+    "social-media": "Redes Sociales",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "rights": "© {{year}} Metis Bank. Todos los derechos reservados."
   }
 }

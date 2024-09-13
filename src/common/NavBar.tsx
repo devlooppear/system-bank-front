@@ -4,11 +4,13 @@ import useAuth from "../api/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 import LanguageSwitcher from "../components/i18n/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 const NavBar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > window.innerHeight);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,8 +19,8 @@ const NavBar = () => {
 
   const routesWithoutLogout = ["/login", "/register", "/"];
   const navItems = [
-    { to: "/login", label: "Access Account", show: !token || routesWithoutLogout.includes(location.pathname) },
-    { to: "/register", label: "Open Account", show: !token || routesWithoutLogout.includes(location.pathname) },
+    { to: "/login", label: t("navbar.access-account"), show: !token || routesWithoutLogout.includes(location.pathname) },
+    { to: "/register", label: t("navbar.open-account"), show: !token || routesWithoutLogout.includes(location.pathname) },
   ];
 
   const handleLogout = async () => {
@@ -63,10 +65,10 @@ const NavBar = () => {
           {token && (
             <li
               className="bg-white font-semibold text-neutral-900 px-2 py-1 rounded-md shadow-md border-2 border-neutral-400 hover:bg-neutral-50 cursor-pointer flex items-center text-center h-[71%]"
-              title="logout"
+              title={'logout'}
               onClick={handleLogout}
             >
-              {isWideScreen ? "Logout" : <FaSignOutAlt size={18} className="text-neutral-700" />}
+              {isWideScreen ? 'Logout' : <FaSignOutAlt size={18} className="text-neutral-700" />}
             </li>
           )}
           <LanguageSwitcher />
