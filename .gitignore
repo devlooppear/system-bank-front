@@ -24,4 +24,7 @@ dist-ssr
 *.sw?
 
 .env
+
+# Lock Files
 package-lock.json
+pnpm-lock.yaml
