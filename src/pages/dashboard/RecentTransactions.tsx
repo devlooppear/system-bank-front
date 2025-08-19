@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Transaction, useUserTransactions } from "../../api/hooks/useUser";
-import Loader from "../../common/Loader";
+import Loader from "../../components/Loader";
 import React, { useState } from "react";
 
 interface RecentTransactionsProps {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
+import { Box } from "@mui/material";
 
 const Layout = () => {
   const location = useLocation();
@@ -31,9 +32,9 @@ const Layout = () => {
       <NavBar />
       <div className="flex">
         {!shouldHideSidebar && isWideScreen && <Sidebar />}
-        <main className="flex-1">
+        <Box display="flex" flexDirection="column" flexGrow={1} >
           <Outlet />
-        </main>
+        </Box>
       </div>
       <Footer />
     </>

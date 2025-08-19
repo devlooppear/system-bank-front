@@ -2,89 +2,178 @@ import { useUserById } from "../../api/hooks/useUser";
 import defaultUserImg from "/imgs/27059cae-6647-4966-b6c6-e80475d08712.jpg";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../../common/Loader";
+import Loader from "../../components/Loader";
 import { useTranslation } from "react-i18next";
 import RecentTransactions from "./RecentTransactions";
+import {
+  Box,
+  Container,
+  Typography,
+  Avatar,
+  Paper,
+  Stack,
+  Divider,
+} from "@mui/material";
+import { systemColors } from "../../common/constants/systemColors";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const user_id = localStorage.getItem("user_id");
-
-  const {
-    user,
-    loading: userLoading,
-    error: userError,
-  } = useUserById(user_id ? parseInt(user_id) : 0);
+  const { user, loading: userLoading, error: userError } = useUserById(
+    user_id ? parseInt(user_id) : 0
+  );
 
   if (userLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
         <Loader />
-      </div>
+      </Box>
     );
   }
 
   if (userError) {
     return (
-      <div className="text-red-500 text-center mt-5">
+      <Typography color="error" textAlign="center" mt={5} variant="h6">
         {t("loadingUserError", { error: userError })}
-      </div>
+      </Typography>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-blue-100 to-white flex flex-col items-center gap-3 relative">
-      <div className="absolute z-[0] bg-blue-background min-h-[38vh] bg-cover w-full pt-16 flex justify-center items-center">
-        <h1 className="text-white text-4xl font-bold">
+    <Box
+      minHeight="100vh"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      sx={{
+        background: `linear-gradient(to top, ${systemColors.blue[100]}, #fff)`,
+        position: "relative",
+        pt: { xs: 6, md: 10 },
+      }}
+    >
+      {/* Top Banner */}
+      <Box
+        position="absolute"
+        top={0}
+        width="100%"
+        height={{ xs: "25vh", md: "38vh" }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          backgroundImage: "url('/imgs/blue-background.jpg')",
+          backgroundSize: "cover",
+          zIndex: 0,
+        }}
+      >
+        <Typography
+          color={systemColors.white}
+          fontWeight="bold"
+          sx={{ fontSize: { xs: "1.75rem", md: "2.5rem" } }}
+        >
           {t("welcomeUserProfile")}
-        </h1>
-      </div>
-      <div className="max-h-[100vh] z-[3] mt-8 bg-white shadow-lg rounded-lg p-6 w-[98%] max-w-[980px] mx-4">
-        <div className="flex">
-          {user && (
-            <>
-              <div className="flex flex-col items-center w-full">
-                <h1 className="text-3xl font-bold mb-6 text-center text-blue-950">
-                  {t("userProfileTitle")}
-                </h1>
-                <img
-                  src={defaultUserImg}
-                  className="rounded-full border-2 border-neutral-400 drop-shadow-lg mb-4 w-32 h-32"
-                  alt="Imagem do Usuário"
-                />
-                <h2 className="text-xl font-semibold mb-2 text-blue-950">
-                  {t("userDetailsTitle")}
-                </h2>
-                <div className="flex flex-col gap-1 mt-2 min-w-[90%] max-w-[300px]">
-                  <p className="text-gray-700 mb-4">
-                    {t("userEmail", { email: user.email })}
-                  </p>
-                  <p className="text-gray-700 mb-4">
-                    {t("userName", { name: user.name })}
-                  </p>
-                  {user.accounts && user.accounts.length > 0 && (
-                    <>
-                      <p className="text-gray-700 mb-4">
-                        {t("accountBalance", {
-                          balance: user.accounts[0].balance,
-                        })}
-                      </p>
-                      <p className="text-gray-700 mb-4">
-                        {t("accountType", {
-                          accountType: user.accounts[0].account_type,
-                        })}
-                      </p>
-                    </>
-                  )}
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-        <RecentTransactions userId={user_id} />
-      </div>
+        </Typography>
+      </Box>
+
+      {/* Main Card */}
+      <Container
+        maxWidth="md"
+        sx={{
+          mt: { xs: 20, md: 24 },
+          zIndex: 3,
+          position: "relative",
+          backgroundColor: "white",
+          boxShadow: 3,
+          borderRadius: 2,
+          p: { xs: 3, md: 4 },
+        }}
+      >
+        {user && (
+          <Stack
+            spacing={3}
+            alignItems="center"
+            sx={{ textAlign: "center" }}
+          >
+            {/* User Title */}
+            <Typography
+              fontWeight="bold"
+              color={systemColors.blue[700]}
+              sx={{ fontSize: { xs: "1.5rem", md: "2rem" } }}
+            >
+              {t("userProfileTitle")}
+            </Typography>
+
+            {/* User Avatar */}
+            <Avatar
+              src={defaultUserImg}
+              sx={{
+                width: { xs: 96, md: 128 },
+                height: { xs: 96, md: 128 },
+                border: 2,
+                borderColor: "grey.400",
+                boxShadow: 2,
+              }}
+            />
+
+            {/* User Details */}
+            <Typography
+              fontWeight="medium"
+              color={systemColors.blue[600]}
+              sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}
+            >
+              {t("userDetailsTitle")}
+            </Typography>
+
+            <Paper
+              elevation={1}
+              sx={{
+                p: { xs: 2, md: 3 },
+                minWidth: 280,
+                maxWidth: 360,
+                width: "100%",
+              }}
+            >
+              <Stack spacing={1}>
+                <Typography variant="body1">
+                  {t("userEmail", { email: user.email })}
+                </Typography>
+                <Typography variant="body1">
+                  {t("userName", { name: user.name })}
+                </Typography>
+
+                {user.accounts && user.accounts.length > 0 && (
+                  <>
+                    <Divider sx={{ my: 1 }} />
+                    <Typography variant="body1">
+                      {t("accountBalance", {
+                        balance: user.accounts[0].balance,
+                      })}
+                    </Typography>
+                    <Typography variant="body1">
+                      {t("accountType", {
+                        accountType: user.accounts[0].account_type,
+                      })}
+                    </Typography>
+                  </>
+                )}
+              </Stack>
+            </Paper>
+          </Stack>
+        )}
+
+        {/* Recent Transactions */}
+        <Box mt={4}>
+          <RecentTransactions userId={user_id} />
+        </Box>
+      </Container>
+
       <ToastContainer />
-    </div>
+    </Box>
   );
 };
 

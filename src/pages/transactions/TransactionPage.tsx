@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUserTransactions } from "../../api/hooks/useUser";
 import { toast } from "react-toastify";
-import Loader from "../../common/Loader";
+import Loader from "../../components/Loader";
 import { FaSort } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";

@@ -3,7 +3,7 @@ import logoMetisBank from "/logo/android-chrome-192x192.png";
 import useAuth from "../api/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
-import LanguageSwitcher from "../components/i18n/LanguageSwitcher";
+import LanguageSwitcher from "./i18n/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 const NavBar = () => {
